@@ -90,12 +90,8 @@ void loop()
 if (countdown == 0) {
   countdown = 100;
   long reading = scale.read();
-  display.setTextSize(1);
-  if (menuItem == 2){ display.setTextColor(BLACK);} else {display.setTextColor(WHITE);}
-  display.setCursor(90,24);
-  display.print(scale.get_units(10));
-  display.display();    
-  //Serial.print("Reset");
+  readingfromscale = scale.get_units(10);
+
 }
     
   }    
@@ -150,7 +146,7 @@ void buttonLogic(){
 void drawScreens(){
     // SCREEN MENU
   if (currentScreen == 1){
-    
+  
   if (menuItem == 1){
       drawMainMenu(1);
       drawNavMenu();
@@ -165,6 +161,12 @@ void drawScreens(){
       drawMainMenu(3);
       drawNavMenu();
   }
+
+   display.setTextSize(1);
+   if (menuItem == 2){ display.setTextColor(BLACK);} else {display.setTextColor(WHITE);}
+   display.setCursor(90,24);
+   display.print(readingfromscale);
+   display.display(); 
 }
   
   // SCREEN BREWING
