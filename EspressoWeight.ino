@@ -48,6 +48,8 @@ void setup()
   }
 
   display.clearDisplay();
+  drawScreens();
+  
   display.display();
 
   // listen on serial for scale HX711
@@ -67,9 +69,9 @@ void loop()
   RightButtonState = digitalRead(RightButtonPin);
 
   buttonLogic();
-  drawScreens();
+  //readFromScale();
     
-  delay(500);
+  delay(50);
 }
 
 void buttonLogic(){
@@ -77,10 +79,12 @@ void buttonLogic(){
   if (LeftButtonState == HIGH && currentScreen == 1) {
       if (menuItem == 1){
         menuItem = 3;
-        } else {
-      menuItem = menuItem-1;
+      } else {
+        menuItem = menuItem-1;
       }
+      
       display.clearDisplay();
+      drawScreens();
       display.display();
   }
 
@@ -88,10 +92,12 @@ void buttonLogic(){
   if (CenterButtonState == HIGH && currentScreen == 1) {
    if (menuItem == 3){
         menuItem = 1;
-        } else {
+     } else {
        menuItem = menuItem+1;
      }
+     
       display.clearDisplay();
+      drawScreens();
       display.display();
   }
 
@@ -99,6 +105,7 @@ void buttonLogic(){
   if (RightButtonState == HIGH && menuItem == 1) {
       currentScreen = 2;
       display.clearDisplay();
+      drawScreens();
       display.display();
   }
 
@@ -107,6 +114,7 @@ void buttonLogic(){
       scale.tare();
       currentScreen = 4;
       display.clearDisplay();
+      drawScreens();
       display.display();
   }
 }
@@ -114,22 +122,23 @@ void buttonLogic(){
 void drawScreens(){
     // SCREEN MENU
   if (currentScreen == 1){
-    
     readFromScale();
-    
-    if (menuItem == 1){
+  
+  if (menuItem == 1){
       drawMainMenu(1);
       drawNavMenu();
-    }
-    if (menuItem == 2){
+  }
+  
+  if (menuItem == 2){
       drawMainMenu(2);
       drawNavMenu();
-    }
-    if (menuItem == 3){
+  }
+  
+  if (menuItem == 3){
       drawMainMenu(3);
       drawNavMenu();
-    }
   }
+}
   
   // SCREEN BREWING
   if (currentScreen == 2){
@@ -137,20 +146,24 @@ void drawScreens(){
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.print("Brewing");
-    
     display.setTextSize(1);
     display.setCursor(110,6);
     display.print(targetGrams);
   }
+
+  // SCREED TARE DONE
+  if (currentScreen == 4){
+    display.setCursor(1,1);
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.print("Done");
   }
+}
 
 void readFromScale(){
  
  if (scale.is_ready()) {
     long reading = scale.read();
-    Serial.print("HX711 reading:");
-    Serial.println(reading);
-
     display.clearDisplay();
     display.setTextSize(1);
     display.setCursor(90,24);
