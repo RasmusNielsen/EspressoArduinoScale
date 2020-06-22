@@ -30,10 +30,14 @@ int RightButtonState = 0;
 int brewTime = 27;
 int targetGrams = 31;
 
+float readingfromscale = 0;
+
 int currentScreen = 1;
 // 1 = Menu     2 = Brew    3 = Time settings     4 = Tare Done      5 = End
 
 int menuItem = 1;  
+
+int countdown = 100;
 
 void setup()
 {
@@ -70,7 +74,31 @@ void loop()
   RightButtonState = digitalRead(RightButtonPin);
 
   buttonLogic();
-  //readFromScale();
+
+  if (scale.is_ready()) {
+    //long reading = scale.read();
+    //display.setTextSize(1);
+    //display.setCursor(90,24);
+    //display.print(scale.get_units(10));
+    //display.display();    
+    //readingfromscale = scale.get_units(10);
+    //delay(200);
+
+  countdown = countdown-1;
+
+
+if (countdown == 0) {
+  countdown = 100;
+  long reading = scale.read();
+  display.setTextSize(1);
+  if (menuItem == 2){ display.setTextColor(BLACK);} else {display.setTextColor(WHITE);}
+  display.setCursor(90,24);
+  display.print(scale.get_units(10));
+  display.display();    
+  //Serial.print("Reset");
+}
+    
+  }    
   
   delay(50);
 }
@@ -160,15 +188,6 @@ void drawScreens(){
 }
 
 void readFromScale(){
- 
- if (scale.is_ready()) {
-    long reading = scale.read();
-    display.setTextSize(1);
-    display.setCursor(90,24);
-    display.print(scale.get_units(10));
-    display.display();    
-    delay(200);
-  }    
 }
 
 void Brew(){
