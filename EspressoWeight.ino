@@ -19,7 +19,7 @@ const int LOADCELL_SCK_PIN = 3;
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 HX711 scale;
 
-const int LeftButtonPin = 6;hhhhhh6
+const int LeftButtonPin = 6;
 const int CenterButtonPin = 7;
 const int RightButtonPin = 5;
 
