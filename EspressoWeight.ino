@@ -49,7 +49,6 @@ void setup()
 
   display.clearDisplay();
   drawScreens();
-  
   display.display();
 
   // listen on serial for scale HX711
@@ -59,6 +58,8 @@ void setup()
   // Calibrate the scale
   scale.set_scale(1860); 
   scale.tare();
+
+
 }
 
 void loop()
@@ -70,7 +71,7 @@ void loop()
 
   buttonLogic();
   //readFromScale();
-    
+  
   delay(50);
 }
 
@@ -112,7 +113,6 @@ void buttonLogic(){
   // if on tare menu and pressed
   if (RightButtonState == HIGH && menuItem == 2) {
       scale.tare();
-      currentScreen = 4;
       display.clearDisplay();
       drawScreens();
       display.display();
@@ -122,8 +122,7 @@ void buttonLogic(){
 void drawScreens(){
     // SCREEN MENU
   if (currentScreen == 1){
-    readFromScale();
-  
+    
   if (menuItem == 1){
       drawMainMenu(1);
       drawNavMenu();
@@ -164,10 +163,11 @@ void readFromScale(){
  
  if (scale.is_ready()) {
     long reading = scale.read();
-    display.clearDisplay();
     display.setTextSize(1);
     display.setCursor(90,24);
-    display.print(scale.get_units(10));      
+    display.print(scale.get_units(10));
+    display.display();    
+    delay(200);
   }    
 }
 
