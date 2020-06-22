@@ -61,7 +61,19 @@ void setup()
 
 void loop()
 {
-  //if on menu and left is pressed
+ //read button states
+  LeftButtonState = digitalRead(LeftButtonPin);
+  CenterButtonState = digitalRead(CenterButtonPin);
+  RightButtonState = digitalRead(RightButtonPin);
+
+  buttonLogic();
+  drawScreens();
+    
+  delay(500);
+}
+
+void buttonLogic(){
+   //if on menu and left is pressed
   if (LeftButtonState == HIGH && currentScreen == 1) {
       if (menuItem == 1){
         menuItem = 3;
@@ -89,13 +101,18 @@ void loop()
       display.clearDisplay();
       display.display();
   }
-    
-  //read button states
-  LeftButtonState = digitalRead(LeftButtonPin);
-  CenterButtonState = digitalRead(CenterButtonPin);
-  RightButtonState = digitalRead(RightButtonPin);
 
-  // SCREEN MENU
+  // if on tare menu and pressed
+  if (RightButtonState == HIGH && menuItem == 2) {
+      scale.tare();
+      currentScreen = 4;
+      display.clearDisplay();
+      display.display();
+  }
+}
+
+void drawScreens(){
+    // SCREEN MENU
   if (currentScreen == 1){
     
     readFromScale();
@@ -125,9 +142,7 @@ void loop()
     display.setCursor(110,6);
     display.print(targetGrams);
   }
-    
-  delay(500);
-}
+  }
 
 void readFromScale(){
  
@@ -145,10 +160,6 @@ void readFromScale(){
 
 void Brew(){
 
-}
-
-void Tare(){
-  scale.tare();
 }
 
 void drawMainMenu(int no){
