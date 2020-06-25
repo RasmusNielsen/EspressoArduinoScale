@@ -90,7 +90,14 @@ if (currentScreen == 2) {
 if (scale.wait_ready_timeout(1000)) {
   countdown = countdown-1;
   if (countdown == 0) {
-    countdown = 10;
+    
+    if (currentScreen == 1){
+      countdown = 60;
+    }
+    if (currentScreen == 2){
+      countdown = 10;
+    }
+    
     readingfromscale = scale.get_units(10);
     display.clearDisplay();
     drawScreens();
